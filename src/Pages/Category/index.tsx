@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getMoviesByCategory, getGenres } from "../../services/movieService";
 import { MovieCard } from "../../components/MovieCard";
 import styles from "./styles.module.css";
@@ -25,6 +25,9 @@ function Category() {
         const genres = await getGenres();
         const g = genres.find((x) => x.id === genreId);
         setGenreName(g ? g.name : "Categoria");
+
+        // Scroll pro topo quando muda de página
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err) {
         console.error(err);
       } finally {
@@ -34,33 +37,69 @@ function Category() {
     loadData();
   }, [genreId, page]);
 
-  if (loading) return <div style={{ padding: 24 }}>Carregando filmes...</div>;
+  if (loading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
+        <p>Carregando filmes...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
-      <h2>{genreName}</h2>
-      <div className={styles.grid}>
-        {movies.map((m) => (
-          <MovieCard
-            key={m.id}
-            id={m.id}
-            title={m.title}
-            posterPath={m.poster_path}
-            voteAverage={m.vote_average}
-            releaseDate={m.release_date}
-          />
-        ))}
+      {/* Header da categoria */}
+      <div className={styles.categoryHeader}>
+        <h1 className={styles.categoryTitle}>{genreName}</h1>
+        <span className={styles.movieCount}>{movies.length} filmes</span>
       </div>
 
-      <div className={styles.pagination}>
-        <button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page === 1}>
-          Anterior
-        </button>
-        <span>Página {page} de {totalPages}</span>
-        <button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page === totalPages}>
-          Próxima
-        </button>
-      </div>
+      {/* Grid de filmes */}
+      {movies.length > 0 ? (
+        <div className={styles.grid}>
+          {movies.map((m) => (
+            <MovieCard
+              key={m.id}
+              id={m.id}
+              title={m.title}
+              posterPath={m.poster_path}
+              voteAverage={m.vote_average}
+              releaseDate={m.release_date}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.emptyState}>
+          <p>Nenhum filme encontrado nesta categoria</p>
+          <Link to="/home" className={styles.backLink}>Voltar para Home</Link>
+        </div>
+      )}
+
+      {/* Paginação */}
+      {totalPages > 1 && (
+        <div className={styles.pagination}>
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            disabled={page === 1}
+            className={styles.pageButton}
+          >
+            ← Anterior
+          </button>
+
+          <div className={styles.pageInfo}>
+            <span className={styles.currentPage}>{page}</span>
+            <span className={styles.totalPages}>de {totalPages}</span>
+          </div>
+
+          <button
+            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+            disabled={page === totalPages}
+            className={styles.pageButton}
+          >
+            Próxima →
+          </button>
+        </div>
+      )}
     </div>
   );
 }

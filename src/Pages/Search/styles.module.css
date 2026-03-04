@@ -1,64 +1,316 @@
 .container {
-  padding: var(--spacing-lg);
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  color: #fff;
+  padding: 80px 20px 40px;
 }
 
-.form {
-  display: flex;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
+/* Header */
+.header {
+  max-width: 800px;
+  margin: 0 auto 30px;
+  text-align: center;
 }
 
-.form input {
-  flex: 1;
-  padding: var(--spacing-sm);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-muted);
+.title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: #fff;
 }
 
-.form button {
+.title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
   background: var(--color-primary);
-  color: var(--color-text);
-  border: none;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
+  margin: 15px auto 0;
+  border-radius: 2px;
 }
 
-.form button:hover {
-  background: #f40612;
+.subtitle {
+  color: #888;
+  font-size: 1rem;
 }
 
-.results {
+/* Formulário */
+.form {
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+
+.searchWrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  padding: 4px;
+  transition: all 0.2s ease;
 }
+
+.searchWrapper:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(255, 94, 0, 0.1);
+}
+
+.searchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 14px 20px;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: #666;
+}
+
+.searchButton {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.searchButton:hover {
+  background: #ff8533;
+  transform: scale(1.02);
+}
+
+/* Loading */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 94, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--color-primary);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Resultados info */
+.resultsInfo {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+}
+
+.resultsCount {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(255, 94, 0, 0.1);
+  border: 1px solid rgba(255, 94, 0, 0.2);
+  border-radius: 30px;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+}
+
+/* Grid de resultados */
+.results {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 25px;
+}
+
+/* Paginação */
 .pagination {
+  max-width: 1200px;
+  margin: 40px auto 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-lg);
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.pagination button {
-  background: var(--color-primary);
-  color: var(--color-text);
-  border: none;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
+.pageButton {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
 }
 
-.pagination button:disabled {
-  background: var(--color-muted);
+.pageButton:hover:not(:disabled) {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.pageButton:disabled {
+  opacity: 0.3;
   cursor: not-allowed;
 }
-@media screen and (max-width: 600px) {
-  .results {
-    
-    justify-content: center;
-    padding: 0;
+
+.pageInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 20px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.currentPage {
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 1.1rem;
+}
+
+.totalPages {
+  color: #888;
+  font-size: 0.95rem;
+}
+
+/* Estado sem resultados */
+.noResults {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  max-width: 500px;
+  margin: 40px auto;
+}
+
+.noResultsIcon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.noResults h3 {
+  font-size: 1.5rem;
+  margin: 0 0 10px;
+  color: #fff;
+}
+
+.noResults p {
+  color: #888;
+  font-size: 1rem;
+}
+
+/* Estado inicial */
+.initialState {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.initialIcon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.initialState h3 {
+  font-size: 1.5rem;
+  margin: 0 0 10px;
+  color: #666;
+}
+
+.initialState p {
+  color: #444;
+  font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 70px 16px 30px;
   }
-  
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .searchWrapper {
+    flex-direction: column;
+    background: transparent;
+    border: none;
+    gap: 10px;
+  }
+
+  .searchInput {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 12px 16px;
+  }
+
+  .searchButton {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .results {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .results {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+
+  .pagination {
+    gap: 10px;
+  }
+
+  .pageButton {
+    padding: 8px 16px;
+    min-width: 90px;
+    font-size: 0.9rem;
+  }
+
+  .pageInfo {
+    padding: 6px 12px;
+  }
+
+  .initialIcon {
+    font-size: 3rem;
+  }
+
+  .initialState h3 {
+    font-size: 1.2rem;
+  }
 }

@@ -1,0 +1,340 @@
+.container {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efeito de luz de projetor */
+.projectorLight {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255, 94, 0, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: projectorPulse 8s ease-in-out infinite;
+}
+
+@keyframes projectorPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+/* Rolos de filme decorativos */
+.filmReel {
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 200px;
+  height: 200px;
+  border: 4px solid rgba(255, 94, 0, 0.1);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: spin 20s linear infinite;
+}
+
+.filmReel::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border: 4px dashed rgba(255, 94, 0, 0.2);
+  border-radius: 50%;
+}
+
+.filmReelRight {
+  right: -50px;
+  left: auto;
+  bottom: auto;
+  top: -50px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Conteúdo principal */
+.content {
+  max-width: 600px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Código 404 */
+.errorCode {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  perspective: 500px;
+}
+
+.digit {
+  font-size: 8rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 4px var(--color-primary);
+  text-stroke: 4px var(--color-primary);
+  text-shadow: 0 0 30px rgba(255, 94, 0, 0.3);
+  animation: float 3s ease-in-out infinite;
+  display: inline-block;
+  line-height: 1;
+}
+
+.digit:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.digit:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+/* Título */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  margin: 0 0 20px;
+  color: #fff;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+}
+
+/* Tira de filme decorativa */
+.filmStrip {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 30px 0;
+}
+
+.strip {
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 94, 0, 0.2);
+  border: 2px solid rgba(255, 94, 0, 0.3);
+  border-radius: 4px;
+  animation: stripFlicker 2s ease-in-out infinite;
+}
+
+.strip:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.strip:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes stripFlicker {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); background: rgba(255, 94, 0, 0.4); }
+}
+
+/* Mensagens */
+.message {
+  font-size: 1.5rem;
+  color: #e0e0e0;
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+
+.subMessage {
+  color: #888;
+  font-size: 1rem;
+  margin: 0 0 30px;
+}
+
+/* Sugestões */
+.suggestions {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 94, 0, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 30px 0;
+  text-align: left;
+}
+
+.suggestions h3 {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions li {
+  color: #bbb;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 1.1rem;
+}
+
+.suggestions li:last-child {
+  border-bottom: none;
+}
+
+/* Botões */
+.actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.primaryButton, .secondaryButton {
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.primaryButton {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+}
+
+.primaryButton:hover {
+  background: #ff8533;
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(255, 94, 0, 0.3);
+}
+
+.secondaryButton {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.secondaryButton:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+/* Código do filme no canto */
+.filmCode {
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: monospace;
+  color: #333;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  opacity: 0.5;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .digit {
+    font-size: 6rem;
+    -webkit-text-stroke: 3px var(--color-primary);
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .message {
+    font-size: 1.2rem;
+  }
+  
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .primaryButton, .secondaryButton {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .filmReel {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .digit {
+    font-size: 4rem;
+    -webkit-text-stroke: 2px var(--color-primary);
+  }
+  
+  .title {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+  
+  .message {
+    font-size: 1rem;
+  }
+  
+  .suggestions {
+    padding: 16px;
+  }
+  
+  .suggestions li {
+    font-size: 0.95rem;
+  }
+  
+  .filmCode {
+    right: 16px;
+    font-size: 0.7rem;
+  }
+}

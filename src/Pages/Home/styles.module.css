@@ -1,68 +1,249 @@
+/* styles.module.css */
+
 .container {
-  padding: 16px;
+  min-height: 100vh;
   background-color: var(--color-background);
   color: #fff;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  padding-bottom: 2rem;
 }
 
-.carousel {
-  display: flex;
-  overflow-x: scroll;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.slide {
-  min-width: 300px;
+/* Hero Section */
+.hero {
   position: relative;
-}
-
-.backdrop {
   width: 100%;
-  border-radius: 8px;
+  height: 70vh;
+  min-height: 500px;
+  margin-bottom: 2rem;
 }
 
-.title {
+.heroBackdrop {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.heroGradient {
   position: absolute;
-  bottom: 8px;
-  left: 12px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 10, 10, 0.9) 0%,
+    transparent 50%,
+    rgba(10, 10, 10, 0.4) 100%
+  );
 }
 
-.section {
-  margin-bottom: 32px;
+.heroContent {
+  position: absolute;
+  bottom: 20%;
+  left: 5%;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.heroOverview {
+  font-size: 1rem;
+  color: #e0e0e0;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.heroButtons {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.heroButton {
+  padding: 0.8rem 2rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.heroButton:hover {
+  background: #ff8533;
+  transform: scale(1.05);
+}
+
+.heroButtonOutline {
+  padding: 0.8rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  transition: all 0.2s ease;
+}
+
+.heroButtonOutline:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--color-primary);
+}
+
+/* Seções */
+.section {
+  padding: 1rem 5%;
+  margin-bottom: 2rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
 .sectionTitle {
-  font-size: 1.4rem;
-  margin-bottom: 12px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  position: relative;
+  display: inline-block;
 }
 
-.scroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 12px;
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--color-primary);
+  border-radius: 2px;
 }
 
-.card {
-  min-width: 140px;
-  text-align: center;
+.sectionBadge {
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
 }
 
-.poster {
-  width: 100%;
-  border-radius: 6px;
-}
-
-.cardTitle {
+.seeAll {
+  color: var(--color-primary);
+  text-decoration: none;
   font-size: 0.9rem;
-  margin-top: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.seeAll:hover {
+  color: #ff8533;
+  transform: translateX(5px);
+}
+
+/* Skeletons de loading */
+.skeletonHero {
+  width: 100%;
+  height: 70vh;
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  margin-bottom: 2rem;
+}
+
+.skeletonCarousel {
+  height: 200px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  margin: 1rem 5%;
+  border-radius: 8px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Ajustes mobile */
+@media (max-width: 768px) {
+  .hero {
+    height: 50vh;
+    min-height: 400px;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroOverview {
+    font-size: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .heroButtons {
+    gap: 0.5rem;
+  }
+
+  .heroButton, .heroButtonOutline {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .section {
+    padding: 1rem 4%;
+  }
+
+  .sectionTitle {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 40vh;
+    min-height: 300px;
+  }
+
+  .heroContent {
+    bottom: 15%;
+    left: 4%;
+  }
+
+  .heroTitle {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .heroOverview {
+    display: none;
+  }
+
+  .heroButtons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .heroButton, .heroButtonOutline {
+    width: 100%;
+    justify-content: center;
+  }
 }

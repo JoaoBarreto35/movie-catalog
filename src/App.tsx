@@ -9,6 +9,7 @@ import { Header } from './components/Header';
 import Search from './Pages/Search';
 import Category from './Pages/Category';
 import Details from './Pages/Details';
+import { NotFound } from './Pages/NotFound';
 
 function ProtectedRoute({ session, children }: { session: Session | null; children: React.ReactNode }) {
   if (!session) return <Navigate to="/login" replace />;
@@ -76,7 +77,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<Navigate to={session ? "/home" : "/login"} replace />} />
+        {/* <Route path="*" element={<Navigate to={session ? "/home" : "/login"} replace />} /> */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

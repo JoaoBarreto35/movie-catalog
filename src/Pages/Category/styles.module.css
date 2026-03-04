@@ -1,39 +1,236 @@
 .container {
-   padding: var(--spacing-lg);
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  color: #fff;
+  padding: 80px 20px 40px;
 }
 
-.grid {
+/* Header da categoria */
+.categoryHeader {
+  max-width: 1200px;
+  margin: 0 auto 30px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: var(--spacing-md);
+  gap: 15px;
 }
 
+.categoryTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  display: inline-block;
+}
+
+.categoryTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--color-primary);
+  border-radius: 2px;
+}
+
+.movieCount {
+  padding: 6px 16px;
+  background: rgba(255, 94, 0, 0.1);
+  border: 1px solid rgba(255, 94, 0, 0.2);
+  border-radius: 30px;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+}
+
+/* Grid de filmes */
+.grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 25px;
+}
+
+/* Loading */
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #0a0a0a;
+  color: #fff;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 94, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--color-primary);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  max-width: 500px;
+  margin: 40px auto;
+}
+
+.emptyState p {
+  color: #888;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.backLink {
+  display: inline-block;
+  padding: 10px 24px;
+  background: var(--color-primary);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.backLink:hover {
+  background: #ff8533;
+  transform: scale(1.05);
+}
+
+/* Paginação */
 .pagination {
+  max-width: 1200px;
+  margin: 40px auto 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-lg);
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.pagination button {
-  background: var(--color-primary);
-  color: var(--color-text);
-  border: none;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
+.pageButton {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
 }
 
-.pagination button:disabled {
-  background: var(--color-muted);
+.pageButton:hover:not(:disabled) {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.pageButton:disabled {
+  opacity: 0.3;
   cursor: not-allowed;
 }
-@media screen and (max-width: 600px) {
-  .grid {
-    
-    justify-content: center;
-    padding: 0;
-  }
-  
+
+.pageInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 20px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+.currentPage {
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 1.1rem;
+}
+
+.totalPages {
+  color: #888;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 70px 16px 30px;
+  }
+
+  .categoryHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .categoryTitle {
+    font-size: 1.8rem;
+  }
+
+  .categoryTitle::after {
+    width: 40px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .pagination {
+    gap: 12px;
+  }
+
+  .pageButton {
+    padding: 8px 16px;
+    min-width: 90px;
+    font-size: 0.9rem;
+  }
+
+  .pageInfo {
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .categoryTitle {
+    font-size: 1.5rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pageButton {
+    order: 1;
+    min-width: 120px;
+  }
+
+  .pageInfo {
+    order: 0;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+} 

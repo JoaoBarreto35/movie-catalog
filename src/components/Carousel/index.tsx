@@ -21,7 +21,7 @@ export function Carousel({ movies }: CarouselProps) {
             title={m.title}
             posterPath={m.poster_path}
             voteAverage={m.vote_average}
-            releaseDate={m.release_date || 'Data desconhecida'}
+            releaseDate={m.release_date || ''}
           />
         </div>
       ))}

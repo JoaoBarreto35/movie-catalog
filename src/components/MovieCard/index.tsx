@@ -22,17 +22,21 @@ export function MovieCard({ id, title, posterPath, voteAverage, releaseDate }: {
             src={`https://image.tmdb.org/t/p/w300${posterPath}`}
             alt={title}
             className={styles.poster}
+            loading="lazy" // boa prática pra performance
           />
         ) : (
-          <div className={styles.noPoster}>Sem imagem</div>
+          <div className={styles.noPoster}>
+            <span>🎬</span>
+          </div>
         )}
         <div className={styles.rating}>
-          ⭐ {voteAverage.toFixed(1)}
+          <span className={styles.star}>★</span>
+          {voteAverage.toFixed(1)}
         </div>
       </div>
       <div className={styles.info}>
         <h4 className={styles.title}>{title}</h4>
-        <p className={styles.year}>{releaseDate?.slice(0, 4)}</p>
+        <p className={styles.year}>{releaseDate?.slice(0, 4) || "—"}</p>
       </div>
     </div>
   );

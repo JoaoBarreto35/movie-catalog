@@ -518,3 +518,189 @@
     font-size: 1rem;
   }
 }
+
+/* Botão de Favorito */
+.favoriteButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: #fff;
+  padding: 0;
+}
+
+.favoriteButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.heartIcon {
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s ease;
+}
+
+/* Quando estiver favoritado */
+.favorited {
+  background: rgba(255, 94, 0, 0.15); /* Cor primária bem clarinha no fundo */
+  border-color: rgba(255, 94, 0, 0.5);
+}
+
+.favorited .heartIcon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 5px rgba(255, 94, 0, 0.5));
+}
+
+.favoriteButton:active {
+  transform: scale(0.9);
+}
+
+.favoriteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Animação de "Pop" ao clicar */
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1.1); }
+}
+
+.favorited .heartIcon {
+  animation: heartPop 0.4s forwards;
+}
+/* Botão de Lista */
+.listButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.listButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.listIcon {
+  width: 18px;
+  height: 18px;
+  transition: all 0.3s ease;
+}
+
+.inList {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.inList .listIcon {
+  fill: white;
+}
+
+.listButton:active {
+  transform: scale(0.98);
+}
+
+.listButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.listButtonText {
+  transition: all 0.3s ease;
+}
+
+/* Spinner pequeno para loading */
+.spinnerSmall {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Botão de Favorito (mantendo o anterior) */
+.favoriteButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: #fff;
+  padding: 0;
+}
+
+.favoriteButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.heartIcon {
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s ease;
+}
+
+.favorited {
+  background: rgba(255, 94, 0, 0.15);
+  border-color: rgba(255, 94, 0, 0.5);
+}
+
+.favorited .heartIcon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 5px rgba(255, 94, 0, 0.5));
+}
+
+.favoriteButton:active {
+  transform: scale(0.9);
+}
+
+.favoriteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1.1); }
+}
+
+.favorited .heartIcon {
+  animation: heartPop 0.4s forwards;
+}

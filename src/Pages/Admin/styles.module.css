@@ -1,0 +1,356 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+  color: #fff;
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff, #ff5e00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #888;
+  font-size: 1rem;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-top: 3px solid;
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.statIcon {
+  font-size: 2.5rem;
+}
+
+.statInfo {
+  flex: 1;
+}
+
+.statValue {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.statTitle {
+  display: block;
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+/* Chart Section */
+.chartSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chartCard {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chartTitle {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+.chartContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 200px;
+  gap: 0.5rem;
+}
+
+.chartBar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.bar {
+  width: 100%;
+  background: #ff5e00;
+  border-radius: 4px;
+  transition: height 0.3s ease;
+  position: relative;
+  min-height: 4px;
+  cursor: pointer;
+}
+
+.barValue {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  color: #ff5e00;
+  font-weight: bold;
+}
+
+.barLabel {
+  font-size: 0.7rem;
+  color: #888;
+}
+
+/* Quick Actions */
+.quickActions {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.quickActions h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.quickActionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 1rem;
+}
+
+.quickActionCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.quickActionCard:hover {
+  border-color: #ff5e00;
+  background: rgba(255, 94, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.quickIcon {
+  font-size: 1.5rem;
+}
+
+.quickName {
+  font-size: 0.75rem;
+  color: #fff;
+  text-align: center;
+}
+
+/* Recent Transactions */
+.recentSection {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.seeAllLink {
+  color: #ff5e00;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.seeAllLink:hover {
+  text-decoration: underline;
+}
+
+.transactionsTable {
+  overflow-x: auto;
+}
+
+.transactionsTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transactionsTable th {
+  text-align: left;
+  padding: 0.75rem;
+  color: #888;
+  font-weight: 500;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.transactionsTable td {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #ccc;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userInfo strong {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.userInfo small {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.amount {
+  font-weight: 600;
+  color: #ff5e00;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.statusPaid {
+  color: #00c851;
+  font-size: 0.8rem;
+}
+
+.statusPending {
+  color: #ff8800;
+  font-size: 0.8rem;
+}
+
+.statusFailed {
+  color: #ff4444;
+  font-size: 0.8rem;
+}
+
+.viewButton {
+  background: none;
+  border: 1px solid #ff5e00;
+  color: #ff5e00;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.viewButton:hover {
+  background: #ff5e00;
+  color: white;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  color: #888;
+}
+
+.emptyState span {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.footer {
+  text-align: center;
+  color: #666;
+  font-size: 0.75rem;
+  margin-top: 2rem;
+}
+
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #141414;
+  color: white;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 94, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #ff5e00;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .chartSection {
+    grid-template-columns: 1fr;
+  }
+
+  .quickActionsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  }
+}

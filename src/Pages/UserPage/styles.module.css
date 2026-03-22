@@ -526,3 +526,409 @@
   border: 2px solid green;
 }
 */
+/* Histórico de Pagamentos */
+.historyCard {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.historyTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  padding-left: 10px;
+}
+
+.historyTitle::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+.transactionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transactionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.transactionItem:hover {
+  border-color: rgba(255, 94, 0, 0.3);
+  background: rgba(255, 94, 0, 0.05);
+}
+
+.transactionInfo {
+  display: flex;
+  gap: 20px;
+  align-items: baseline;
+}
+
+.transactionAmount {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.transactionDate {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.transactionPaid {
+  background: rgba(0, 200, 81, 0.1);
+  color: #00c851;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.transactionPending {
+  background: rgba(255, 136, 0, 0.1);
+  color: #ff8800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.viewAllButton {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 15px;
+  padding: 8px;
+  width: 100%;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.viewAllButton:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* Planos Disponíveis */
+.availablePlans {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.plansTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  padding-left: 10px;
+}
+
+.plansTitle::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+.plansGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.planCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.planCard:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  background: rgba(255, 94, 0, 0.05);
+}
+
+.planCardName {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.planCardPrice {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 15px;
+}
+
+.planCardPeriod {
+  font-size: 0.9rem;
+  color: #888;
+  font-weight: normal;
+}
+
+.planCardFeatures {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.planCardFeatures li {
+  padding: 6px 0;
+  color: #aaa;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.planCardFeatures li:last-child {
+  border-bottom: none;
+}
+
+.moreFeatures {
+  color: #666 !important;
+  font-style: italic;
+  border-bottom: none !important;
+}
+
+.upgradeButton {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  background: rgba(255, 94, 0, 0.1);
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.upgradeButton:hover {
+  background: var(--color-primary);
+  color: white;
+  transform: scale(1.02);
+}
+
+.upgradeInfo {
+  text-align: center;
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 15px;
+}
+
+/* Assinatura Card */
+.subscriptionCard {
+  background: rgba(255, 94, 0, 0.05);
+  border: 1px solid rgba(255, 94, 0, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+}
+
+.planDetails {
+  margin: 20px 0;
+}
+
+.planName {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cancelBadge {
+  background: #ff4444;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.planPrice {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 15px;
+}
+
+.statusActive {
+  background: #00c851;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: inline-block;
+}
+
+.statusWarning {
+  background: #ff8800;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: inline-block;
+}
+
+.planDates {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.planDates p {
+  margin: 8px 0;
+  color: #999;
+}
+
+.planDates strong {
+  color: white;
+}
+
+.subscriptionCode {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-family: monospace;
+}
+
+.subscriptionActions {
+  margin: 25px 0 15px;
+}
+
+.reactivateButton {
+  background: #00c851;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.reactivateButton:hover {
+  background: #00a844;
+  transform: scale(1.02);
+}
+
+.cancelButton {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff8888;
+  border: 1px solid #ff4444;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.cancelButton:hover {
+  background: rgba(255, 68, 68, 0.3);
+}
+
+.cancelInfo {
+  color: #888;
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.noSubscription {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+}
+
+.noSubscription .emptyIcon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.noSubscription h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.noSubscription p {
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.subscribeButton {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  text-decoration: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.subscribeButton:hover {
+  background: #ff8533;
+  transform: scale(1.05);
+}
+
+.message {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.message.success {
+  background: rgba(0, 200, 81, 0.1);
+  border: 1px solid #00c851;
+  color: #00c851;
+}
+
+.message.error {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  color: #ff8888;
+}

@@ -1,4 +1,4 @@
-// pages/UserProfile/index.tsx
+// src/Pages/UserProfile/index.tsx
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
@@ -10,7 +10,7 @@ import { Card } from "../../components/Card";
 import { Carousel } from "../../components/Carousel";
 import styles from "./styles.module.css";
 
-type TabType = 'resumo' | 'lista' | 'favoritos' | 'historico';
+type TabType = 'resumo' | 'lista' | 'favoritos' | 'historico' | 'assinatura';
 
 interface ProcessedItem {
   id: number;
@@ -20,7 +20,6 @@ interface ProcessedItem {
   release_date?: string;
   watched_at?: string;
   mediaType: 'movie' | 'tv';
-  // Campos para episódios (séries)
   current_season?: number;
   current_episode?: number;
   current_episode_title?: string;
@@ -29,8 +28,12 @@ interface ProcessedItem {
 function UserProfile() {
   const [activeTab, setActiveTab] = useState<TabType>('resumo');
   const [user, setUser] = useState<any>(null);
+  const [subscription, setSubscription] = useState<any>(null);
+  const [plans, setPlans] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<{ type: string; text: string }>({ type: '', text: '' });
 
   // Dados das abas
   const [stats, setStats] = useState<any>(null);
@@ -43,7 +46,7 @@ function UserProfile() {
   const itemCache = new Map<string, any>();
 
   // =====================================================
-  // FUNÇÃO: Buscar detalhes de filmes OU séries (para watchlist/favoritos)
+  // FUNÇÃO: Buscar detalhes de filmes OU séries
   // =====================================================
   const fetchItemDetails = useCallback(async (items: any[]): Promise<ProcessedItem[]> => {
     const promises = items.map(async (item) => {
@@ -90,7 +93,7 @@ function UserProfile() {
   }, []);
 
   // =====================================================
-  // FUNÇÃO: Processar histórico (com episódios!)
+  // FUNÇÃO: Processar histórico
   // =====================================================
   const processHistoryItems = useCallback((items: any[]): ProcessedItem[] => {
     return items.map((item: any) => ({
@@ -101,7 +104,6 @@ function UserProfile() {
       release_date: item.item_data?.release_date,
       watched_at: item.watched_at,
       mediaType: item.item_type === 'tv' ? 'tv' : 'movie',
-      // Campos específicos para séries (vindos do JSON)
       current_season: item.item_data?.current_season,
       current_episode: item.item_data?.current_episode,
       current_episode_title: item.item_data?.current_episode_title
@@ -124,6 +126,32 @@ function UserProfile() {
       if (!user) throw new Error('Usuário não autenticado');
       setUser(user);
 
+      // Buscar planos disponíveis
+      const { data: plansData } = await supabase
+        .from('plans')
+        .select('*')
+        .eq('active', true)
+        .order('price');
+      setPlans(plansData || []);
+
+      // Buscar assinatura ativa
+      const { data: subData } = await supabase
+        .from("subscriptions")
+        .select("*, plans(*)")
+        .eq("user_id", user.id)
+        .eq("status", "active")
+        .maybeSingle();
+      setSubscription(subData);
+
+      // Buscar transações do usuário
+      const { data: transactionsData } = await supabase
+        .from('transactions')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('paid_at', { ascending: false })
+        .limit(10);
+      setTransactions(transactionsData || []);
+
       // Carrega tudo em paralelo
       const [
         statsResult,
@@ -137,32 +165,23 @@ function UserProfile() {
         getHistory(20, 0)
       ]);
 
-      // Processa estatísticas
-      if (statsResult.success && statsResult.data) {
-        setStats(statsResult.data);
-      }
+      if (statsResult.success && statsResult.data) setStats(statsResult.data);
 
-      // Processa watchlist
       if (watchlistResult.data) {
         const detailedWatchlist = await fetchItemDetails(watchlistResult.data);
         setWatchlist(detailedWatchlist);
       }
 
-      // Processa favoritos
       if (favoritesResult.data) {
         const detailedFavorites = await fetchItemDetails(favoritesResult.data);
         setFavorites(detailedFavorites);
       }
 
-      // Processa histórico (com episódios!)
       if (historyResult.success && historyResult.data) {
         const processedHistory = processHistoryItems(historyResult.data);
-
-        // Ordena por data (mais recente primeiro)
         const sortedHistory = processedHistory.sort((a, b) =>
           new Date(b.watched_at || 0).getTime() - new Date(a.watched_at || 0).getTime()
         );
-
         setRecentHistory(sortedHistory);
         setHistoryCount(historyResult.total || 0);
       }
@@ -172,6 +191,56 @@ function UserProfile() {
       setError(error.message || 'Erro ao carregar perfil');
     } finally {
       setLoading(false);
+    }
+  }
+
+  // =====================================================
+  // FUNÇÕES DA ASSINATURA
+  // =====================================================
+  // src/Pages/UserPage/index.tsx
+
+  async function cancelSubscription() {
+    if (!subscription) return;
+    if (!confirm('Tem certeza que deseja cancelar sua assinatura? Você terá acesso até o final do período já pago.')) return;
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch(
+        'https://auszyqasqmvxfdanvytz.supabase.co/functions/v1/cancel-subscription',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token}`
+          },
+          body: JSON.stringify({
+            subscriptionId: subscription.id,
+            subscriptionCode: subscription.perfectpay_subscription_id
+          })
+        }
+      );
+
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error);
+
+      setMessage({ type: 'success', text: '✅ Assinatura cancelada com sucesso!' });
+      setSubscription((prev: any) => prev ? { ...prev, cancel_at_period_end: true } : prev);
+    } catch (error: any) {
+      setMessage({ type: 'error', text: error.message });
+    }
+  }
+
+  async function reactivateSubscription() {
+    try {
+      await supabase
+        .from('subscriptions')
+        .update({ cancel_at_period_end: false })
+        .eq('id', subscription?.id);
+
+      setMessage({ type: 'success', text: '✅ Assinatura reativada!' });
+      setSubscription((prev: any) => prev ? { ...prev, cancel_at_period_end: false } : prev);
+    } catch (error: any) {
+      setMessage({ type: 'error', text: error.message });
     }
   }
 
@@ -213,6 +282,13 @@ function UserProfile() {
 
   return (
     <div className={styles.container}>
+      {/* Mensagem de feedback */}
+      {message.text && (
+        <div className={`${styles.message} ${styles[message.type]}`}>
+          {message.text}
+        </div>
+      )}
+
       {/* Header do Perfil */}
       <div className={styles.profileHeader}>
         <div className={styles.profileAvatar}>
@@ -281,6 +357,12 @@ function UserProfile() {
         >
           Histórico <span className={styles.tabCount}>({historyCount})</span>
         </button>
+        <button
+          className={`${styles.tab} ${activeTab === 'assinatura' ? styles.activeTab : ''}`}
+          onClick={() => setActiveTab('assinatura')}
+        >
+          Assinatura
+        </button>
       </div>
 
       {/* Conteúdo das Abas */}
@@ -288,7 +370,6 @@ function UserProfile() {
         {/* ABA RESUMO */}
         {activeTab === 'resumo' && (
           <div className={styles.resumo}>
-            {/* Continue Assistindo (com episódios!) */}
             {recentHistory.length > 0 && (
               <section className={styles.resumoSection}>
                 <div className={styles.sectionHeader}>
@@ -304,7 +385,6 @@ function UserProfile() {
               </section>
             )}
 
-            {/* Minha Lista (últimos 6) - usa grid normal, sem carrossel */}
             {watchlist.length > 0 && (
               <section className={styles.resumoSection}>
                 <div className={styles.sectionHeader}>
@@ -332,7 +412,6 @@ function UserProfile() {
               </section>
             )}
 
-            {/* Favoritos (últimos 6) - usa grid normal, sem carrossel */}
             {favorites.length > 0 && (
               <section className={styles.resumoSection}>
                 <div className={styles.sectionHeader}>
@@ -360,7 +439,6 @@ function UserProfile() {
               </section>
             )}
 
-            {/* Empty State */}
             {recentHistory.length === 0 && watchlist.length === 0 && favorites.length === 0 && (
               <div className={styles.emptyState}>
                 <span className={styles.emptyIcon}>🎬</span>
@@ -446,7 +524,7 @@ function UserProfile() {
           </div>
         )}
 
-        {/* ABA HISTÓRICO - COM EPISÓDIOS! */}
+        {/* ABA HISTÓRICO */}
         {activeTab === 'historico' && (
           <div className={styles.fullList}>
             {recentHistory.length > 0 ? (
@@ -469,7 +547,6 @@ function UserProfile() {
                           voteAverage={item.vote_average}
                           year={item.release_date}
                           mediaType={item.mediaType}
-                          // 👇 Passa informações do episódio para séries!
                           currentSeason={item.current_season}
                           currentEpisode={item.current_episode}
                           currentEpisodeTitle={item.current_episode_title}
@@ -486,6 +563,149 @@ function UserProfile() {
                 <p>Os filmes e séries que você assistir aparecerão aqui</p>
                 <Link to="/home" className={styles.exploreButton}>
                   Explorar catálogo
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ABA ASSINATURA */}
+        {activeTab === 'assinatura' && (
+          <div className={styles.billingSection}>
+            {subscription ? (
+              <>
+                {/* CARD DA ASSINATURA ATUAL */}
+                <div className={styles.subscriptionCard}>
+                  <h2 className={styles.sectionTitle}>Meu plano atual</h2>
+
+                  <div className={styles.planDetails}>
+                    <div className={styles.planName}>
+                      {subscription.plans?.name || 'Plano Mensal'}
+                      {subscription.cancel_at_period_end && (
+                        <span className={styles.cancelBadge}>Cancelamento solicitado</span>
+                      )}
+                    </div>
+
+                    <div className={styles.planPrice}>
+                      R$ {subscription.plans?.price || 19.90} / {subscription.plans?.interval === 'month' ? 'mês' : 'ano'}
+                    </div>
+
+                    <div className={styles.planStatus}>
+                      <span className={subscription.cancel_at_period_end ? styles.statusWarning : styles.statusActive}>
+                        {subscription.cancel_at_period_end ? '🟡 Cancelamento pendente' : '🟢 Ativo'}
+                      </span>
+                    </div>
+
+                    <div className={styles.planDates}>
+                      <p>
+                        <strong>Próxima cobrança:</strong>{' '}
+                        {new Date(subscription.current_period_end).toLocaleDateString('pt-BR')}
+                      </p>
+                      <p>
+                        <strong>Forma de pagamento:</strong>{' '}
+                        {subscription.payment_method === 'pix' ? 'PIX' : 'Cartão de crédito'}
+                      </p>
+                      {subscription.perfectpay_subscription_id && (
+                        <p>
+                          <strong>Código da assinatura:</strong>{' '}
+                          <code className={styles.subscriptionCode}>{subscription.perfectpay_subscription_id}</code>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className={styles.subscriptionActions}>
+                    {subscription.cancel_at_period_end ? (
+                      <button onClick={reactivateSubscription} className={styles.reactivateButton}>
+                        🔄 Reativar assinatura
+                      </button>
+                    ) : (
+                      <button onClick={cancelSubscription} className={styles.cancelButton}>
+                        ❌ Cancelar assinatura
+                      </button>
+                    )}
+                  </div>
+
+                  <p className={styles.cancelInfo}>
+                    ⚡ Ao cancelar, você terá acesso até o final do período já pago.
+                  </p>
+                </div>
+
+                {/* PLANOS DISPONÍVEIS */}
+                {plans && plans.length > 1 && (
+                  <div className={styles.availablePlans}>
+                    <h3 className={styles.plansTitle}>Outros planos disponíveis</h3>
+                    <div className={styles.plansGrid}>
+                      {plans
+                        .filter(p => p.id !== subscription?.plan_id)
+                        .map(plan => (
+                          <div key={plan.id} className={styles.planCard}>
+                            <h4 className={styles.planCardName}>{plan.name}</h4>
+                            <div className={styles.planCardPrice}>
+                              R$ {plan.price.toFixed(2)}
+                              <span className={styles.planCardPeriod}>/{plan.interval === 'month' ? 'mês' : 'ano'}</span>
+                            </div>
+                            <ul className={styles.planCardFeatures}>
+                              {plan.features?.slice(0, 3).map((feature: string, i: number) => (
+                                <li key={i}>✓ {feature}</li>
+                              ))}
+                              {plan.features?.length > 3 && (
+                                <li className={styles.moreFeatures}>+{plan.features.length - 3} outras vantagens</li>
+                              )}
+                            </ul>
+                            <Link
+                              to={`/checkout/${plan.id}`}
+                              className={styles.upgradeButton}
+                            >
+                              {plan.price < (subscription?.plans?.price || 0)
+                                ? '🔽 Fazer downgrade'
+                                : '🔼 Fazer upgrade'}
+                            </Link>
+                          </div>
+                        ))}
+                    </div>
+                    <p className={styles.upgradeInfo}>
+                      💡 O upgrade/downgrade será aplicado na próxima cobrança. Você não paga duas vezes!
+                    </p>
+                  </div>
+                )}
+
+                {/* 📜 HISTÓRICO DE PAGAMENTOS */}
+                {transactions.length > 0 && (
+                  <div className={styles.historyCard}>
+                    <h3 className={styles.historyTitle}>📜 Histórico de pagamentos</h3>
+                    <div className={styles.transactionsList}>
+                      {transactions.map((t) => (
+                        <div key={t.id} className={styles.transactionItem}>
+                          <div className={styles.transactionInfo}>
+                            <span className={styles.transactionAmount}>
+                              R$ {t.amount.toFixed(2)}
+                            </span>
+                            <span className={styles.transactionDate}>
+                              {new Date(t.paid_at || t.created_at).toLocaleDateString('pt-BR')}
+                            </span>
+                          </div>
+                          <span className={t.status === 'paid' ? styles.transactionPaid : styles.transactionPending}>
+                            {t.status === 'paid' ? '✓ Pago' : '⏳ Pendente'}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    {transactions.length >= 10 && (
+                      <button className={styles.viewAllButton}>
+                        Ver todos os pagamentos →
+                      </button>
+                    )}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className={styles.noSubscription}>
+                <span className={styles.emptyIcon}>🎬</span>
+                <h3>Você ainda não tem uma assinatura ativa</h3>
+                <p>Assine agora e tenha acesso a todos os filmes e séries!</p>
+                <Link to="/plans" className={styles.subscribeButton}>
+                  Ver planos
                 </Link>
               </div>
             )}

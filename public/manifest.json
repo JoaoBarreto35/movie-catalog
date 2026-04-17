@@ -1,5 +1,6 @@
 {
- "name": "App",
+ "name": "Aura Flix",
+ "short_name": "Aura Flix",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",

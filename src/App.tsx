@@ -27,7 +27,7 @@ import PlansManager from "./Pages/Admin/Plans";
 import UsersManager from "./Pages/Admin/Users";
 import SubscriptionsManager from "./Pages/Admin/Subscriptions";
 import TransactionsManager from "./Pages/Admin/Transactions";
-import LogsManager from "./Pages/Admin/Logs";
+//import LogsManager from "./Pages/Admin/Logs";
 import PlanForm from "./Pages/Admin/Plans/PlanForm";
 import { NotFound } from "./Pages/NotFound";
 
@@ -124,7 +124,7 @@ function App() {
                   <Route path="/admin/users" element={<UsersManager />} />
                   <Route path="/admin/subscriptions" element={<SubscriptionsManager />} />
                   <Route path="/admin/transactions" element={<TransactionsManager />} />
-                  <Route path="/admin/logs" element={<LogsManager />} />
+                  {/* <Route path="/admin/logs" element={<LogsManager />} /> */}
                 </Route>
               </Route>
             </Route>

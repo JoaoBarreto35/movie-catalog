@@ -27,9 +27,11 @@ import PlansManager from "./Pages/Admin/Plans";
 import UsersManager from "./Pages/Admin/Users";
 import SubscriptionsManager from "./Pages/Admin/Subscriptions";
 import TransactionsManager from "./Pages/Admin/Transactions";
-//import LogsManager from "./Pages/Admin/Logs";
+// import LogsManager from "./Pages/Admin/Logs";
 import PlanForm from "./Pages/Admin/Plans/PlanForm";
 import { NotFound } from "./Pages/NotFound";
+import ChangePassword from './Pages/ChangePassword';
+import Welcome from './Pages/Welcome';
 
 function AppShell() {
   return (
@@ -95,10 +97,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/plans" element={<Plans />} />
 
           <Route element={<ProtectedLayout session={session} />}>
             <Route element={<AppShell />}>
-              <Route path="/plans" element={<Plans />} />
             </Route>
 
             <Route element={<SubscriptionLayout session={session} />}>
@@ -115,6 +117,8 @@ function App() {
                 <Route path="/search" element={<Search />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/set-password" element={<SetPassword />} />
+                <Route path="/change-password" element={<ChangePassword />} />
+                <Route path="/welcome" element={<Welcome />} />
 
                 <Route element={<AdminGuardLayout session={session} />}>
                   <Route path="/admin" element={<AdminDashboard />} />

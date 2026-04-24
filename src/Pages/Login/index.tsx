@@ -1,3 +1,4 @@
+// src/Pages/Login/index.tsx
 import { useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { useNavigate } from 'react-router-dom';
@@ -15,15 +16,31 @@ export default function Login() {
     setLoading(true);
     setMsg(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       setMsg(error.message);
+      setLoading(false);
+      return;
+    }
+
+    if (!data.user) {
+      setMsg("Erro ao obter dados do usuário");
+      setLoading(false);
+      return;
+    }
+
+    // 🔥 VERIFICAR SE É PRIMEIRO ACESSO USANDO last_sign_in_at
+    // Se last_sign_in_at for null, é o primeiro login!
+    const isFirstLogin = !data.user.last_sign_in_at;
+
+    if (isFirstLogin) {
+      navigate('/welcome');
     } else {
-      navigate("/home");
+      navigate('/home');
     }
 
     setLoading(false);
@@ -95,13 +112,13 @@ export default function Login() {
 
         <div className={styles.signupLink}>
           <span>PRIMEIRA VEZ?</span>
-          <a href="#">CRIAR CONTA</a>
+          <a href="/plans">CRIAR CONTA</a>
         </div>
       </form>
 
       <div className={styles.filmStrip}></div>
       <div className={`${styles.filmStrip} ${styles.filmStripRight}`}></div>
-      <div className={styles.filmCode}>BARRETOFLIX_001</div>
+      <div className={styles.filmCode}>AURA_FLIX</div>
     </div>
   );
 }

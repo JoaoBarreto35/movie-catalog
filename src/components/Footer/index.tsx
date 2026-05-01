@@ -6,7 +6,7 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={styles.content}>
         <p>
-          © {new Date().getFullYear()} BarretoFlix. Todos os direitos reservados.
+          © {new Date().getFullYear()} AuraFlix. Todos os direitos reservados.
         </p>
         <div className={styles.tmdbAttribution}>
           <a

@@ -27,9 +27,11 @@ import PlansManager from "./Pages/Admin/Plans";
 import UsersManager from "./Pages/Admin/Users";
 import SubscriptionsManager from "./Pages/Admin/Subscriptions";
 import TransactionsManager from "./Pages/Admin/Transactions";
-import LogsManager from "./Pages/Admin/Logs";
+// import LogsManager from "./Pages/Admin/Logs";
 import PlanForm from "./Pages/Admin/Plans/PlanForm";
 import { NotFound } from "./Pages/NotFound";
+import ChangePassword from "./Pages/ChangePassword";
+import Welcome from "./Pages/Welcome";
 
 function AppShell() {
   return (
@@ -43,6 +45,19 @@ function AppShell() {
 
 function ProtectedLayout({ session }: { session: Session | null }) {
   if (!session) return <Navigate to="/login" replace />;
+
+  return <Outlet />;
+}
+
+function FirstAccessGuard({ session }: { session: Session | null }) {
+  if (!session) return <Navigate to="/login" replace />;
+
+  const isFirstAccess = !session.user.last_sign_in_at;
+
+  if (isFirstAccess) {
+    return <Navigate to="/welcome" replace />;
+  }
+
   return <Outlet />;
 }
 
@@ -55,6 +70,7 @@ function SubscriptionLayout({ session }: { session: Session | null }) {
     </SubscriptionGuard>
   );
 }
+
 function AdminGuardLayout({ session }: { session: Session | null }) {
   if (!session) return <Navigate to="/login" replace />;
 
@@ -64,7 +80,6 @@ function AdminGuardLayout({ session }: { session: Session | null }) {
     </AdminGuard>
   );
 }
-
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -91,40 +106,52 @@ function App() {
 
   return (
     <ToastProvider>
-
       <BrowserRouter>
         <Routes>
+          {/* Rotas públicas */}
           <Route path="/login" element={<Login />} />
+          <Route path="/plans" element={<Plans />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
 
+          {/* Rotas que precisam de login */}
           <Route element={<ProtectedLayout session={session} />}>
+            {/* Welcome e troca de senha ficam fora do FirstAccessGuard */}
             <Route element={<AppShell />}>
-              <Route path="/plans" element={<Plans />} />
+              <Route path="/welcome" element={<Welcome />} />
+              <Route path="/change-password" element={<ChangePassword />} />
+              <Route path="/set-password" element={<SetPassword />} />
             </Route>
 
-            <Route element={<SubscriptionLayout session={session} />}>
+            {/* Restante do sistema passa pelo FirstAccessGuard */}
+            <Route element={<FirstAccessGuard session={session} />}>
+              <Route element={<SubscriptionLayout session={session} />}>
+                <Route element={<AppShell />}>
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/category/:id" element={<Category />} />
+                  <Route path="/details/:id" element={<Details />} />
+                  <Route path="/profile" element={<UserProfile />} />
+                  <Route path="/series" element={<Series />} />
+                  <Route path="/movies" element={<Movies />} />
+                  <Route path="/tv/:id" element={<TVDetails />} />
+                  <Route path="/tv/category/:id" element={<TVCategory />} />
+                  <Route path="/search" element={<Search />} />
 
-              <Route element={<AppShell />}>
-                <Route path="/home" element={<Home />} />
-                <Route path="/category/:id" element={<Category />} />
-                <Route path="/details/:id" element={<Details />} />
-                <Route path="/profile" element={<UserProfile />} />
-                <Route path="/series" element={<Series />} />
-                <Route path="/movies" element={<Movies />} />
-                <Route path="/tv/:id" element={<TVDetails />} />
-                <Route path="/tv/category/:id" element={<TVCategory />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/payment-success" element={<PaymentSuccess />} />
-                <Route path="/set-password" element={<SetPassword />} />
-
-                <Route element={<AdminGuardLayout session={session} />}>
-                  <Route path="/admin" element={<AdminDashboard />} />
-                  <Route path="/admin/plans/" element={<PlansManager />} />
-                  <Route path="/admin/plans/new" element={<PlanForm />} />
-                  <Route path="/admin/plans/edit/:id" element={<PlanForm />} />
-                  <Route path="/admin/users" element={<UsersManager />} />
-                  <Route path="/admin/subscriptions" element={<SubscriptionsManager />} />
-                  <Route path="/admin/transactions" element={<TransactionsManager />} />
-                  <Route path="/admin/logs" element={<LogsManager />} />
+                  <Route element={<AdminGuardLayout session={session} />}>
+                    <Route path="/admin" element={<AdminDashboard />} />
+                    <Route path="/admin/plans/" element={<PlansManager />} />
+                    <Route path="/admin/plans/new" element={<PlanForm />} />
+                    <Route path="/admin/plans/edit/:id" element={<PlanForm />} />
+                    <Route path="/admin/users" element={<UsersManager />} />
+                    <Route
+                      path="/admin/subscriptions"
+                      element={<SubscriptionsManager />}
+                    />
+                    <Route
+                      path="/admin/transactions"
+                      element={<TransactionsManager />}
+                    />
+                    {/* <Route path="/admin/logs" element={<LogsManager />} /> */}
+                  </Route>
                 </Route>
               </Route>
             </Route>
@@ -134,6 +161,7 @@ function App() {
             path="/"
             element={<Navigate to={session ? "/home" : "/login"} replace />}
           />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

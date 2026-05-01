@@ -1,0 +1,204 @@
+/* Reaproveitando o mesmo estilo do Login, com pequenas adaptações */
+.container {
+    min-height: 100vh;
+    background: radial-gradient(circle at 20% 50%, rgba(0, 0, 0, 0.95) 0%, #0a0a0a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .glowEffect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 40%, rgba(255, 94, 0, 0.15), transparent 70%);
+    pointer-events: none;
+  }
+  
+  .form {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid rgba(255, 94, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 94, 0, 0.1);
+    z-index: 2;
+  }
+  
+  .logoHeader {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .logo {
+    max-width: 180px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .logoHeader p {
+    color: #ff5e00;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+  
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ff5e00, transparent);
+    margin: 1.5rem 0;
+  }
+  
+  .message {
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .success {
+    background: rgba(0, 200, 81, 0.1);
+    border: 1px solid #00c851;
+    color: #00c851;
+  }
+  
+  .error {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid #ff4444;
+    color: #ff8888;
+  }
+  
+  .formGroup {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  
+  .label {
+    display: block;
+    color: #fff;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: #ff5e00;
+    box-shadow: 0 0 10px rgba(255, 94, 0, 0.3);
+  }
+  
+  .inputIcon {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    font-size: 1.2rem;
+    opacity: 0.5;
+  }
+  
+  .button {
+    width: 100%;
+    padding: 0.75rem;
+    background: linear-gradient(90deg, #ff5e00, #ff8533);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 0.5rem;
+  }
+  
+  .button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255, 94, 0, 0.4);
+  }
+  
+  .button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .loading {
+    opacity: 0.7;
+    cursor: wait;
+  }
+  
+  .backLink {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+  
+  .backButton {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: color 0.3s;
+  }
+  
+  .backButton:hover {
+    color: #ff5e00;
+  }
+  
+  .filmStrip {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      #ff5e00,
+      #ff5e00 20px,
+      transparent 20px,
+      transparent 40px
+    );
+    opacity: 0.3;
+  }
+  
+  .filmStripRight {
+    top: 20px;
+    bottom: auto;
+  }
+  
+  .filmCode {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    font-size: 0.7rem;
+    color: #ff5e00;
+    opacity: 0.5;
+    font-family: monospace;
+    letter-spacing: 2px;
+  }
+  
+  @media (max-width: 480px) {
+    .form {
+      margin: 1rem;
+      padding: 1.5rem;
+    }
+    
+    .logo {
+      max-width: 140px;
+    }
+  }

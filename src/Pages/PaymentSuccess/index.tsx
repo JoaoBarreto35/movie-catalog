@@ -1,6 +1,5 @@
-// src/Pages/PaymentSuccess/index.tsx
-
 import { useState } from "react";
+import styles from "./styles.module.css";
 
 const FUNCTION_URL =
   "https://auszyqasqmvxfdanvytz.supabase.co/functions/v1/create-first-access-link";
@@ -9,15 +8,22 @@ export default function PaymentSuccess() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<"error" | "success" | "info">(
+    "info"
+  );
 
-  async function handleCreateAccessLink() {
+  async function handleCreateAccessLink(event: React.FormEvent) {
+    event.preventDefault();
+
     try {
       setLoading(true);
       setMessage("");
+      setMessageType("info");
 
       const normalizedEmail = email.toLowerCase().trim();
 
       if (!normalizedEmail) {
+        setMessageType("error");
         setMessage("Digite o e-mail usado na compra.");
         return;
       }
@@ -35,13 +41,18 @@ export default function PaymentSuccess() {
       const data = await response.json();
 
       if (!response.ok || !data.ok) {
+        setMessageType("error");
         setMessage(data.message || "Não foi possível liberar seu acesso.");
         return;
       }
 
+      setMessageType("success");
+      setMessage("Acesso encontrado! Redirecionando...");
+
       window.location.href = data.url;
     } catch (error) {
       console.error(error);
+      setMessageType("error");
       setMessage("Erro ao validar seu acesso. Tente novamente.");
     } finally {
       setLoading(false);
@@ -49,65 +60,70 @@ export default function PaymentSuccess() {
   }
 
   return (
-    <main style={{ minHeight: "70vh", padding: 24 }}>
-      <section
-        style={{
-          maxWidth: 480,
-          margin: "48px auto",
-          padding: 24,
-          borderRadius: 16,
-          border: "1px solid rgba(255,255,255,0.12)",
-        }}
-      >
-        <h1>Pagamento confirmado!</h1>
+    <div className={styles.container}>
+      <div className={styles.glowEffect}></div>
+      <div className={styles.glowEffectSecondary}></div>
 
-        <p>
-          Digite o e-mail usado na compra para liberar seu primeiro acesso.
+      <section className={styles.card}>
+        <div className={styles.icon}>✅</div>
+
+        <span className={styles.badge}>Pagamento confirmado</span>
+
+        <h1 className={styles.title}>Seu acesso está quase pronto!</h1>
+
+        <p className={styles.message}>
+          Digite o e-mail usado na compra para liberarmos seu primeiro acesso ao
+          Aura Flix.
         </p>
 
-        <div style={{ display: "grid", gap: 12, marginTop: 24 }}>
-          <input
-            type="email"
-            placeholder="seuemail@gmail.com"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            disabled={loading}
-            style={{
-              padding: "12px 14px",
-              borderRadius: 10,
-              border: "1px solid #ccc",
-              fontSize: 16,
-            }}
-          />
+        <form onSubmit={handleCreateAccessLink} className={styles.form}>
+          {message && (
+            <div
+              className={
+                messageType === "success"
+                  ? styles.successMessage
+                  : styles.errorMessage
+              }
+            >
+              {message}
+            </div>
+          )}
+
+          <div className={styles.formGroup}>
+            <input
+              type="email"
+              placeholder="seuemail@gmail.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              disabled={loading}
+              className={styles.input}
+              autoComplete="email"
+            />
+
+            <span className={styles.inputIcon}>✉️</span>
+          </div>
 
           <button
-            type="button"
-            onClick={handleCreateAccessLink}
+            type="submit"
             disabled={loading}
-            style={{
-              padding: "12px 14px",
-              borderRadius: 10,
-              border: 0,
-              cursor: loading ? "not-allowed" : "pointer",
-              fontSize: 16,
-              fontWeight: 700,
-            }}
+            className={styles.primaryButton}
           >
             {loading ? "Validando..." : "Liberar meu acesso"}
           </button>
+        </form>
+
+        <div className={styles.infoBox}>
+          <strong>Importante:</strong>
+          <span>
+            Esse acesso automático funciona apenas no primeiro login. Depois
+            disso, entre normalmente com seu e-mail e senha.
+          </span>
         </div>
 
-        {message && (
-          <p style={{ marginTop: 16 }}>
-            {message}
-          </p>
-        )}
-
-        <p style={{ marginTop: 24, fontSize: 14, opacity: 0.8 }}>
-          Esse acesso automático só funciona no primeiro login. Depois disso,
-          entre normalmente com seu e-mail e senha.
+        <p className={styles.footerText}>
+          Se você acabou de pagar, aguarde alguns segundos e tente novamente.
         </p>
       </section>
-    </main>
+    </div>
   );
 }

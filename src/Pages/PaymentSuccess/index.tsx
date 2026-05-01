@@ -61,17 +61,16 @@ export default function PaymentSuccess() {
 
   return (
     <main className={styles.container}>
-      <div className={styles.glowOne} />
-      <div className={styles.glowTwo} />
+      <div className={styles.glowEffect} />
 
       <section className={styles.card}>
-        <div className={styles.iconCircle}>✅</div>
+        <div className={styles.icon}>✅</div>
 
-        <span className={styles.badge}>Pagamento confirmado</span>
+        <p className={styles.badge}>Pagamento confirmado</p>
 
         <h1 className={styles.title}>Seu acesso está quase pronto!</h1>
 
-        <p className={styles.description}>
+        <p className={styles.message}>
           Digite o e-mail usado na compra para liberarmos seu primeiro acesso ao
           Aura Flix.
         </p>
@@ -89,20 +88,26 @@ export default function PaymentSuccess() {
             </div>
           )}
 
-          <label className={styles.fieldLabel} htmlFor="payment-success-email">
-            E-mail da compra
-          </label>
+          <div className={styles.inputGroup}>
+            <label className={styles.label} htmlFor="email">
+              E-mail da compra
+            </label>
 
-          <input
-            id="payment-success-email"
-            type="email"
-            placeholder="seuemail@gmail.com"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            disabled={loading}
-            className={styles.emailInput}
-            autoComplete="email"
-          />
+            <div className={styles.inputBox}>
+              <span className={styles.inputIcon}>✉️</span>
+
+              <input
+                id="email"
+                type="email"
+                placeholder="seuemail@gmail.com"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                disabled={loading}
+                className={styles.input}
+                autoComplete="email"
+              />
+            </div>
+          </div>
 
           <button
             type="submit"
@@ -115,10 +120,10 @@ export default function PaymentSuccess() {
 
         <div className={styles.infoBox}>
           <strong>Importante:</strong>
-          <span>
+          <p>
             Esse acesso automático funciona apenas no primeiro login. Depois
             disso, entre normalmente com seu e-mail e senha.
-          </span>
+          </p>
         </div>
 
         <p className={styles.footerText}>

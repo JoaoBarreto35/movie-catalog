@@ -3,14 +3,14 @@
   background: radial-gradient(
     circle at 20% 50%,
     rgba(0, 0, 0, 0.95) 0%,
-    #0a0a0a 100%
+    var(--color-background) 100%
   );
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 1.5rem;
+  padding: var(--spacing-lg);
 }
 
 .glowEffect {
@@ -39,21 +39,35 @@
 }
 
 .card {
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 2.5rem;
+  position: relative;
+  z-index: 2;
   width: 100%;
   max-width: 520px;
-  border: 1px solid rgba(255, 94, 0, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  padding: 2.5rem;
   text-align: center;
-  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
+    rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 94, 0, 0.3);
+  border-radius: 20px;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
 }
 
 .icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 1rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 2.6rem;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.25), transparent 35%),
+    linear-gradient(135deg, var(--color-primary), #ff8533);
+  box-shadow: 0 12px 30px rgba(255, 94, 0, 0.28);
   animation: bounce 0.6s ease;
 }
 
@@ -67,24 +81,26 @@
   color: #ffb380;
   background: rgba(255, 94, 0, 0.12);
   border: 1px solid rgba(255, 94, 0, 0.35);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .title {
-  font-size: 1.9rem;
-  font-weight: 700;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #fff, #ff5e00);
+  font-size: 1.9rem;
+  line-height: 1.15;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff, #ffb380 45%, var(--color-primary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .message {
-  color: #aaa;
+  color: var(--color-muted);
   margin-bottom: 1.5rem;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .form {
@@ -99,23 +115,40 @@
 
 .input {
   width: 100%;
-  padding: 0.85rem 2.75rem 0.85rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  border-radius: 10px;
+  height: 54px;
+  padding: 0 3rem 0 1rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035)),
+    #111;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--color-text);
+  border-radius: 999px;
   font-size: 1rem;
-  transition: all 0.3s;
+  font-family: var(--font-main);
+  outline: none;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
 }
 
 .input::placeholder {
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.input:hover:not(:disabled) {
+  border-color: rgba(255, 94, 0, 0.45);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.045)),
+    #111;
 }
 
 .input:focus {
-  outline: none;
-  border-color: #ff5e00;
-  box-shadow: 0 0 10px rgba(255, 94, 0, 0.3);
+  border-color: var(--color-primary);
+  box-shadow:
+    0 0 0 4px rgba(255, 94, 0, 0.12),
+    0 0 24px rgba(255, 94, 0, 0.18);
 }
 
 .input:disabled {
@@ -123,30 +156,53 @@
   cursor: not-allowed;
 }
 
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text);
+  caret-color: var(--color-text);
+  transition: background-color 9999s ease-in-out 0s;
+  box-shadow:
+    0 0 0 1000px #111 inset,
+    0 0 0 4px rgba(255, 94, 0, 0.12);
+  border-color: var(--color-primary);
+}
+
 .inputIcon {
   position: absolute;
-  right: 12px;
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.15rem;
-  opacity: 0.7;
+  font-size: 1.1rem;
+  opacity: 0.72;
+  pointer-events: none;
 }
 
 .primaryButton {
-  background: linear-gradient(90deg, #ff5e00, #ff8533);
+  min-height: 54px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--color-primary), #ff8533);
   border: none;
   padding: 0.85rem 1.5rem;
-  border-radius: 40px;
+  border-radius: 999px;
   color: white;
-  font-weight: 700;
+  font-family: var(--font-main);
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.3s;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
   font-size: 1rem;
 }
 
 .primaryButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(255, 94, 0, 0.4);
+  box-shadow: 0 10px 26px rgba(255, 94, 0, 0.35);
+}
+
+.primaryButton:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .primaryButton:disabled {
@@ -156,10 +212,10 @@
 
 .errorMessage {
   background: rgba(255, 68, 68, 0.1);
-  border: 1px solid #ff4444;
-  color: #ff8888;
-  padding: 0.75rem;
-  border-radius: 10px;
+  border: 1px solid rgba(255, 68, 68, 0.7);
+  color: #ff9b9b;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-lg);
   font-size: 0.9rem;
   line-height: 1.4;
 }
@@ -168,8 +224,8 @@
   background: rgba(34, 197, 94, 0.1);
   border: 1px solid rgba(34, 197, 94, 0.65);
   color: #86efac;
-  padding: 0.75rem;
-  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-lg);
   font-size: 0.9rem;
   line-height: 1.4;
 }
@@ -177,7 +233,7 @@
 .infoBox {
   margin-top: 1.5rem;
   padding: 1rem;
-  border-radius: 14px;
+  border-radius: 16px;
   background: rgba(255, 94, 0, 0.08);
   border: 1px solid rgba(255, 94, 0, 0.22);
   color: #cfcfcf;
@@ -205,13 +261,15 @@
   }
 
   50% {
-    transform: scale(1.1);
+    transform: scale(1.08);
   }
 }
 
 @media (max-width: 480px) {
   .container {
     padding: 1rem;
+    align-items: flex-start;
+    padding-top: 4rem;
   }
 
   .card {
@@ -219,7 +277,9 @@
   }
 
   .icon {
-    font-size: 3.25rem;
+    width: 66px;
+    height: 66px;
+    font-size: 2.2rem;
   }
 
   .title {
@@ -228,5 +288,10 @@
 
   .message {
     font-size: 0.95rem;
+  }
+
+  .input,
+  .primaryButton {
+    height: 52px;
   }
 }

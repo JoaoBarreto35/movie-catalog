@@ -93,7 +93,6 @@
   line-height: 1.15;
   font-weight: 800;
   background: linear-gradient(135deg, #ffffff, #ffb380 45%, var(--color-primary));
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -129,7 +128,7 @@
   transition:
     border-color 0.25s ease,
     box-shadow 0.25s ease,
-    background 0.25s ease,
+    
     transform 0.25s ease;
 }
 

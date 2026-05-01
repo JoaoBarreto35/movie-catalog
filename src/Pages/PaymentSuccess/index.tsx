@@ -12,7 +12,7 @@ export default function PaymentSuccess() {
     "info"
   );
 
-  async function handleCreateAccessLink(event: React.FormEvent) {
+  async function handleCreateAccessLink(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     try {
@@ -60,18 +60,18 @@ export default function PaymentSuccess() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.glowEffect}></div>
-      <div className={styles.glowEffectSecondary}></div>
+    <main className={styles.container}>
+      <div className={styles.glowOne} />
+      <div className={styles.glowTwo} />
 
       <section className={styles.card}>
-        <div className={styles.icon}>✅</div>
+        <div className={styles.iconCircle}>✅</div>
 
         <span className={styles.badge}>Pagamento confirmado</span>
 
         <h1 className={styles.title}>Seu acesso está quase pronto!</h1>
 
-        <p className={styles.message}>
+        <p className={styles.description}>
           Digite o e-mail usado na compra para liberarmos seu primeiro acesso ao
           Aura Flix.
         </p>
@@ -89,19 +89,20 @@ export default function PaymentSuccess() {
             </div>
           )}
 
-          <div className={styles.inputWrapper}>
-            <span className={styles.inputIcon}>✉️</span>
+          <label className={styles.fieldLabel} htmlFor="payment-success-email">
+            E-mail da compra
+          </label>
 
-            <input
-              type="email"
-              placeholder="seuemail@gmail.com"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              disabled={loading}
-              className={styles.emailInput}
-              autoComplete="email"
-            />
-          </div>
+          <input
+            id="payment-success-email"
+            type="email"
+            placeholder="seuemail@gmail.com"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            disabled={loading}
+            className={styles.emailInput}
+            autoComplete="email"
+          />
 
           <button
             type="submit"
@@ -124,6 +125,6 @@ export default function PaymentSuccess() {
           Se você acabou de pagar, aguarde alguns segundos e tente novamente.
         </p>
       </section>
-    </div>
+    </main>
   );
 }

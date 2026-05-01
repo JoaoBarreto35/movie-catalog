@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const FUNCTION_URL =
-  "https://auszyqasqmvxfdanvyt.supabase.co/functions/v1/create-first-access-link";
+  "https://auszyqasqmvxfdanvytz.supabase.co/functions/v1/create-first-access-link";
 
 export default function PaymentSuccess() {
   const [email, setEmail] = useState("");

@@ -1,155 +1,249 @@
-/* src/Pages/PaymentSuccess/styles.module.css */
-
 .container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #141414 0%, #1a1a1a 100%);
+  background: radial-gradient(
+    circle at 20% 50%,
+    rgba(0, 0, 0, 0.95) 0%,
+    #0a0a0a 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  position: relative;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.glowEffect {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(255, 94, 0, 0.16),
+    transparent 70%
+  );
+  pointer-events: none;
 }
 
 .card {
-  background: #1f1f1f;
-  border-radius: 20px;
-  padding: 3rem;
-  max-width: 500px;
   width: 100%;
+  max-width: 500px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2.5rem;
+  border: 1px solid rgba(255, 94, 0, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   text-align: center;
-  border: 1px solid rgba(255, 94, 0, 0.2);
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  z-index: 2;
 }
 
 .icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  animation: bounce 1s ease infinite;
+  font-size: 3.5rem;
+  margin-bottom: 0.75rem;
+  animation: bounce 0.6s ease;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+.badge {
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 }
 
 .title {
   font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 1.5rem;
   background: linear-gradient(135deg, #fff, #ff5e00);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .message {
-  color: #aaa;
+  color: #ffffff;
   margin-bottom: 1.5rem;
-  line-height: 1.6;
+  line-height: 1.5;
+  font-weight: 600;
 }
 
-.emailBox {
-  background: rgba(255, 94, 0, 0.1);
-  border: 1px solid #ff5e00;
-  border-radius: 8px;
-  padding: 0.75rem;
-  margin-bottom: 1.5rem;
+.form {
+  width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.emailLabel {
-  color: #888;
-}
-
-.emailValue {
-  color: #ff5e00;
-}
-
-.infoBox {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
   text-align: left;
 }
 
-.infoBox h3 {
-  font-size: 1rem;
-  margin-bottom: 0.75rem;
-  color: #ff5e00;
+.label {
+  display: block;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding-left: 0.25rem;
 }
 
-.infoBox ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.infoBox li {
-  padding: 0.5rem 0;
-  color: #ccc;
+.inputBox {
+  width: 100%;
+  min-height: 54px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 0.75rem;
+  padding: 0 1rem;
+  background: #121212;
+  border: 1px solid rgba(255, 94, 0, 0.45);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 8px 20px rgba(0, 0, 0, 0.25);
+  transition: 0.25s ease;
 }
 
-.infoBox li:last-child {
-  border-bottom: none;
+.inputBox:focus-within {
+  border-color: #ff5e00;
+  box-shadow:
+    0 0 0 4px rgba(255, 94, 0, 0.12),
+    0 0 24px rgba(255, 94, 0, 0.2);
 }
 
-.infoBox li::before {
-  content: "✓";
-  color: #ff5e00;
-  font-weight: bold;
+.inputIcon {
+  flex: 0 0 auto;
+  font-size: 1.1rem;
+  opacity: 0.75;
+}
+
+.input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 1rem;
+  font-family: var(--font-main);
+  font-weight: 500;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff;
+  caret-color: #ffffff;
+  transition: background-color 9999s ease-in-out 0s;
+  box-shadow: 0 0 0 1000px #121212 inset;
 }
 
 .primaryButton {
-  background: #ff5e00;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
   width: 100%;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease;
+  min-height: 54px;
+  background: linear-gradient(90deg, #ff5e00, #ff8533);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.25s ease;
 }
 
-.primaryButton:hover {
-  opacity: 0.9;
-  transform: scale(1.02);
+.primaryButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(255, 94, 0, 0.4);
 }
 
-.redirect {
-  color: #666;
-  font-size: 0.85rem;
+.primaryButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
-.redirect strong {
-  color: #ff5e00;
+.infoBox {
+  margin-top: 1.25rem;
+  background: rgba(10, 10, 10, 0.95);
+  border: 1px solid rgba(255, 94, 0, 0.18);
+  padding: 1rem;
+  border-radius: 12px;
+  color: #ffffff;
+  text-align: left;
+  line-height: 1.55;
 }
 
-@media (max-width: 768px) {
+.infoBox strong {
+  color: #ff8533;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.infoBox p {
+  margin: 0;
+}
+
+.footerText {
+  margin-top: 1.5rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.errorMessage {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  color: #ff8888;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.successMessage {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.65);
+  color: #86efac;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 480px) {
   .card {
     padding: 1.5rem;
   }
 
   .title {
     font-size: 1.5rem;
+  }
+
+  .icon {
+    font-size: 3rem;
   }
 }

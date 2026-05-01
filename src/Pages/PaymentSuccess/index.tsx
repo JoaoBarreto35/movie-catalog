@@ -89,18 +89,18 @@ export default function PaymentSuccess() {
             </div>
           )}
 
-          <div className={styles.formGroup}>
+          <div className={styles.inputWrapper}>
+            <span className={styles.inputIcon}>✉️</span>
+
             <input
               type="email"
               placeholder="seuemail@gmail.com"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               disabled={loading}
-              className={styles.input}
+              className={styles.emailInput}
               autoComplete="email"
             />
-
-            <span className={styles.inputIcon}>✉️</span>
           </div>
 
           <button

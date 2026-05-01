@@ -108,24 +108,21 @@ function App() {
     <ToastProvider>
       <BrowserRouter>
         <Routes>
+          {/* Rotas públicas */}
           <Route path="/login" element={<Login />} />
           <Route path="/plans" element={<Plans />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
 
+          {/* Rotas que precisam de login */}
           <Route element={<ProtectedLayout session={session} />}>
-            {/* 
-              Welcome fica logada, mas fora do FirstAccessGuard.
-              Assim o usuário de primeiro acesso consegue abrir /welcome.
-            */}
+            {/* Welcome e troca de senha ficam fora do FirstAccessGuard */}
             <Route element={<AppShell />}>
               <Route path="/welcome" element={<Welcome />} />
               <Route path="/change-password" element={<ChangePassword />} />
               <Route path="/set-password" element={<SetPassword />} />
             </Route>
 
-            {/* 
-              Todo o resto passa pelo FirstAccessGuard.
-              Se last_sign_in_at estiver vazio, manda para /welcome.
-            */}
+            {/* Restante do sistema passa pelo FirstAccessGuard */}
             <Route element={<FirstAccessGuard session={session} />}>
               <Route element={<SubscriptionLayout session={session} />}>
                 <Route element={<AppShell />}>
@@ -138,7 +135,6 @@ function App() {
                   <Route path="/tv/:id" element={<TVDetails />} />
                   <Route path="/tv/category/:id" element={<TVCategory />} />
                   <Route path="/search" element={<Search />} />
-                  <Route path="/payment-success" element={<PaymentSuccess />} />
 
                   <Route element={<AdminGuardLayout session={session} />}>
                     <Route path="/admin" element={<AdminDashboard />} />
@@ -146,8 +142,14 @@ function App() {
                     <Route path="/admin/plans/new" element={<PlanForm />} />
                     <Route path="/admin/plans/edit/:id" element={<PlanForm />} />
                     <Route path="/admin/users" element={<UsersManager />} />
-                    <Route path="/admin/subscriptions" element={<SubscriptionsManager />} />
-                    <Route path="/admin/transactions" element={<TransactionsManager />} />
+                    <Route
+                      path="/admin/subscriptions"
+                      element={<SubscriptionsManager />}
+                    />
+                    <Route
+                      path="/admin/transactions"
+                      element={<TransactionsManager />}
+                    />
                     {/* <Route path="/admin/logs" element={<LogsManager />} /> */}
                   </Route>
                 </Route>

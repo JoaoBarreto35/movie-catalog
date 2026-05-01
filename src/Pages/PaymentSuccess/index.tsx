@@ -1,67 +1,113 @@
 // src/Pages/PaymentSuccess/index.tsx
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "../../lib/supabaseClient";
-import styles from "./styles.module.css";
+
+import { useState } from "react";
+
+const FUNCTION_URL =
+  "https://auszyqasqmvxfdanvyt.supabase.co/functions/v1/create-first-access-link";
 
 export default function PaymentSuccess() {
-  const [countdown, setCountdown] = useState(5);
-  const [userEmail, setUserEmail] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    // Pegar email do usuário logado
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) setUserEmail(user.email || "");
-    });
+  async function handleCreateAccessLink() {
+    try {
+      setLoading(true);
+      setMessage("");
 
-    // Contagem regressiva
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          navigate("/home");
-          return 0;
-        }
-        return prev - 1;
+      const normalizedEmail = email.toLowerCase().trim();
+
+      if (!normalizedEmail) {
+        setMessage("Digite o e-mail usado na compra.");
+        return;
+      }
+
+      const response = await fetch(FUNCTION_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: normalizedEmail,
+        }),
       });
-    }, 1000);
 
-    return () => clearInterval(timer);
-  }, [navigate]);
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        setMessage(data.message || "Não foi possível liberar seu acesso.");
+        return;
+      }
+
+      window.location.href = data.url;
+    } catch (error) {
+      console.error(error);
+      setMessage("Erro ao validar seu acesso. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.icon}>🎉</div>
-        <h1 className={styles.title}>Pagamento confirmado!</h1>
-        <p className={styles.message}>
-          Sua assinatura foi ativada com sucesso.
+    <main style={{ minHeight: "70vh", padding: 24 }}>
+      <section
+        style={{
+          maxWidth: 480,
+          margin: "48px auto",
+          padding: 24,
+          borderRadius: 16,
+          border: "1px solid rgba(255,255,255,0.12)",
+        }}
+      >
+        <h1>Pagamento confirmado!</h1>
+
+        <p>
+          Digite o e-mail usado na compra para liberar seu primeiro acesso.
         </p>
 
-        <div className={styles.emailBox}>
-          <span className={styles.emailLabel}>📧 Email vinculado:</span>
-          <strong className={styles.emailValue}>{userEmail}</strong>
+        <div style={{ display: "grid", gap: 12, marginTop: 24 }}>
+          <input
+            type="email"
+            placeholder="seuemail@gmail.com"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            disabled={loading}
+            style={{
+              padding: "12px 14px",
+              borderRadius: 10,
+              border: "1px solid #ccc",
+              fontSize: 16,
+            }}
+          />
+
+          <button
+            type="button"
+            onClick={handleCreateAccessLink}
+            disabled={loading}
+            style={{
+              padding: "12px 14px",
+              borderRadius: 10,
+              border: 0,
+              cursor: loading ? "not-allowed" : "pointer",
+              fontSize: 16,
+              fontWeight: 700,
+            }}
+          >
+            {loading ? "Validando..." : "Liberar meu acesso"}
+          </button>
         </div>
 
-        <div className={styles.infoBox}>
-          <h3>✅ O que acontece agora?</h3>
-          <ul>
-            <li>Sua assinatura já está ativa</li>
-            <li>Acesso ilimitado a todos os filmes e séries</li>
-            <li>Pode assistir em até 2 dispositivos</li>
-            <li>Próxima cobrança em 30 dias</li>
-          </ul>
-        </div>
+        {message && (
+          <p style={{ marginTop: 16 }}>
+            {message}
+          </p>
+        )}
 
-        <button onClick={() => navigate("/home")} className={styles.primaryButton}>
-          Começar a assistir agora
-        </button>
-
-        <p className={styles.redirect}>
-          Redirecionando para home em <strong>{countdown}</strong> segundos...
+        <p style={{ marginTop: 24, fontSize: 14, opacity: 0.8 }}>
+          Esse acesso automático só funciona no primeiro login. Depois disso,
+          entre normalmente com seu e-mail e senha.
         </p>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
